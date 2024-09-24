@@ -1,4 +1,4 @@
-package com.eduaccesscode.service;
+package com.upao.eduacces.service;
 
 import com.upao.eduaccess.dto.ComentarioDTO;
 import com.upao.eduaccess.entity.Comentario;
