@@ -1,6 +1,6 @@
 package com.upao.eduacces.domain;
 
-import com.eduaccesscode.enums.TipoMaterial;
+import com.upao.eduacces.enums.TipoMaterial;
 import jakarta.persistence.*;
 import lombok.Data;
 
