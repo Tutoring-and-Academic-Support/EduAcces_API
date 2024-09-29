@@ -24,4 +24,6 @@ public class Comentario {
     @ManyToOne
     @JoinColumn(name = "curso_id", referencedColumnName = "id", nullable = false)
     private Curso curso;
+
+
 }

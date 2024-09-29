@@ -74,5 +74,42 @@ public class ComentarioService {
             return "Comentario no encontrado.";
         }
     }
+//edicon de comentario
+public String editarComentario(Long comentarioId, ComentarioDTO comentarioDTO) {
+    // Buscar el comentario por ID
+    Optional<Comentario> comentarioOptional = comentarioRepository.findById(comentarioId);
+
+    if (comentarioOptional.isEmpty()) {
+        return "Comentario no encontrado.";
+    }
+
+    Comentario comentario = comentarioOptional.get();
+
+    // Verificar si el comentario pertenece al estudiante que intenta editarlo
+    if (!comentario.getCurso().getId().equals(comentarioDTO.getCursoId())) {
+        return "No tienes permiso para editar este comentario.";
+    }
+
+    // Validar si el estudiante puede editar el comentario dentro de las 24 horas
+    Date ahora = new Date();
+    long diff = ahora.getTime() - comentario.getFecha().getTime();
+    long horas = diff / (1000 * 60 * 60);
+
+    if (horas > 24) {
+        return "El comentario solo puede ser editado dentro de las 24 horas posteriores a su publicación.";
+    }
+
+    // Validar la longitud del comentario
+    if (comentarioDTO.getTexto().length() > 500) {
+        return "El comentario excede el límite de caracteres permitidos.";
+    }
+
+    // Actualizar el comentario
+    comentario.setTexto(comentarioDTO.getTexto());
+    comentarioRepository.save(comentario);
+
+    return "Comentario actualizado con éxito.";
+}
+
 }
 

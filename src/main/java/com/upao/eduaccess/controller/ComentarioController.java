@@ -47,5 +47,17 @@ public class ComentarioController {
             return ResponseEntity.badRequest().body(response);
         }
     }
+
+    // Editar comentario
+    @PutMapping("/editar/{comentarioId}")
+    public ResponseEntity<String> editarComentario(@PathVariable Long comentarioId, @Valid @RequestBody ComentarioDTO comentarioDTO) {
+        try {
+            String respuesta = comentarioService.editarComentario(comentarioId, comentarioDTO);
+            return ResponseEntity.ok(respuesta);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
 }
 
