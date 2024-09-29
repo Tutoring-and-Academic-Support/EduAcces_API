@@ -21,8 +21,8 @@ public class Estudiante {
     @Column(name = "nombre", length = 100, nullable = false)
     private String nombre;
 
-    @Column(name = "contraseña", length = 255, nullable = false)
-    private String contraseña;
+    @Column(name = "password", length = 255, nullable = false)
+    private String password;
 
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
