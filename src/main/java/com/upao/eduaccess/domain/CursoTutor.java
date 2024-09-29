@@ -26,4 +26,3 @@ public class CursoTutor {
     @Column(name = "fecha_termino", nullable = false)
     private Date fechaTermino;
 }
-

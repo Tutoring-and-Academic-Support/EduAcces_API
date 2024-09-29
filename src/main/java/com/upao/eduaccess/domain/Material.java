@@ -27,6 +27,9 @@ public class Material {
     @Column(name = "fecha_subida", nullable = false)
     private Date fechaSubida;
 
+    @Column(name = "file_path", nullable = false)
+    private String filePath;
+
     @ManyToOne
     @JoinColumn(name = "curso_id", referencedColumnName = "id", nullable = false)
     private Curso curso;

@@ -5,6 +5,7 @@ import com.upao.eduaccess.domain.Comentario;
 import com.upao.eduaccess.domain.Curso;
 import com.upao.eduaccess.dto.RespuestaComentarioDTO;
 import com.upao.eduaccess.exception.ResourceNotFoundException;
+
 import com.upao.eduaccess.repository.ComentarioRepository;
 import com.upao.eduaccess.repository.CursoRepository;
 import com.upao.eduaccess.repository.EstudianteCursoRepository;
@@ -38,62 +39,6 @@ public class ComentarioService {
     @Autowired
     private UserRepository userRepository; // Para verificar si el estudiante está inscrito
 
-    // Metodo para publicar comentarios en un curso
-    public String publicarComentarioCurso(Long estudianteId, Long cursoId, String comentarioTexto) {
-        // Verificar si el estudiante está inscrito en el curso
-        boolean estaInscrito = estudianteCursoRepository.existsByEstudianteIdAndCursoId(estudianteId, cursoId);
-        if (!estaInscrito) {
-            return "No estás inscrito en este curso.";
-        }
-
-        // Validar la longitud del comentario
-        if (comentarioTexto.length() > 500) {
-            return "El comentario excede el límite de caracteres permitidos (500 caracteres).";
-        }
-
-        // Validar contenido ofensivo
-        if (contieneContenidoOfensivo(comentarioTexto)) {
-            return "El comentario contiene contenido ofensivo y no puede ser publicado.";
-        }
-
-        // Crear el comentario
-        Comentario comentario = new Comentario();
-        comentario.setTexto(comentarioTexto);
-        comentario.setFecha(new Date());
-
-        // Asociar el comentario con el curso
-        Optional<Curso> cursoOptional = cursoRepository.findById(cursoId);
-        if (cursoOptional.isEmpty()) {
-            return "Curso no encontrado.";
-        }
-        Curso curso = cursoOptional.get();
-        comentario.setCurso(curso);
-
-        // Guardar el comentario en la base de datos
-        comentarioRepository.save(comentario);
-
-        // Obtener el correo del tutor y enviar la notificación
-        String emailTutor = curso.getCursoTutores().get(0).getTutor().getEmail();  // Asume que el curso tiene al menos un tutor
-        notificacionService.enviarNotificacion(
-                emailTutor,
-                "Nuevo comentario publicado",
-                "Se ha publicado un nuevo comentario en uno de tus cursos."
-        );
-
-        return "Comentario publicado con éxito.";
-    }
-
-
-    // Metodo básico para validar contenido ofensivo (puedes usar un diccionario o una API externa)
-    private boolean contieneContenidoOfensivo(String texto) {
-        String[] palabrasOfensivas = { "malaPalabra1", "malaPalabra2" }; // Agrega palabras o usa una API
-        for (String palabra : palabrasOfensivas) {
-            if (texto.toLowerCase().contains(palabra.toLowerCase())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     // Metodo para eliminar comentarios inapropiados
     public String moderarComentario(Long comentarioId, String action, Long tutorId) {
@@ -128,41 +73,6 @@ public class ComentarioService {
         }
     }
 
-    public String publicarComentario(ComentarioDTO comentarioDTO) {
-        // Validar la longitud del comentario
-        if (comentarioDTO.getTexto().length() > 500) {
-            return "El comentario excede el límite de caracteres permitidos.";
-        }
-
-        // Validar si el estudiante está inscrito en el curso
-        boolean estaInscrito = estudianteCursoRepository.existsByEstudianteIdAndCursoId(comentarioDTO.getEstudianteId(), comentarioDTO.getCursoId());
-        if (!estaInscrito) {
-            return "No estás inscrito en este curso.";
-        }
-
-        // Buscar el curso
-        Optional<Curso> cursoOptional = cursoRepository.findById(comentarioDTO.getCursoId());
-        if (cursoOptional.isEmpty()) {
-            return "Curso no encontrado.";
-        }
-
-        Curso curso = cursoOptional.get();
-
-        // Crear el comentario
-        Comentario comentario = new Comentario();
-        comentario.setTexto(comentarioDTO.getTexto());
-        comentario.setFecha(new Date());
-        comentario.setCurso(curso);
-
-        // Guardar el comentario
-        comentarioRepository.save(comentario);
-        notificacionService.enviarNotificacion(
-                "tutora@ejemplo.com",
-                "Nuevo comentario publicado",
-                "Se ha publicado un nuevo comentario en uno de tus cursos."
-        );
-        return "Comentario publicado con éxito.";
-    }
 
     public List<ComentarioDTO> obtenerComentariosPorCurso(Long cursoId) {
         List<Comentario> comentarios = comentarioRepository.findByCursoId(cursoId);
@@ -178,6 +88,7 @@ public class ComentarioService {
             return "Comentario no encontrado.";
         }
     }
+
 
     public String responderComentario(RespuestaComentarioDTO respuestaComentarioDTO) {
         // Validar que el comentario exista
@@ -207,5 +118,43 @@ public class ComentarioService {
 
         return "Respuesta publicada con éxito.";
     }
-}
 
+    //edicon de comentario
+    public String editarComentario(Long comentarioId, ComentarioDTO comentarioDTO) {
+        // Buscar el comentario por ID
+        Optional<Comentario> comentarioOptional = comentarioRepository.findById(comentarioId);
+
+        if (comentarioOptional.isEmpty()) {
+            return "Comentario no encontrado.";
+        }
+
+        Comentario comentario = comentarioOptional.get();
+
+        // Verificar si el comentario pertenece al estudiante que intenta editarlo
+        if (!comentario.getCurso().getId().equals(comentarioDTO.getCursoId())) {
+            return "No tienes permiso para editar este comentario.";
+        }
+
+        // Validar si el estudiante puede editar el comentario dentro de las 24 horas
+        Date ahora = new Date();
+        long diff = ahora.getTime() - comentario.getFecha().getTime();
+        long horas = diff / (1000 * 60 * 60);
+
+        if (horas > 24) {
+            return "El comentario solo puede ser editado dentro de las 24 horas posteriores a su publicación.";
+        }
+
+        // Validar la longitud del comentario
+        if (comentarioDTO.getTexto().length() > 500) {
+            return "El comentario excede el límite de caracteres permitidos.";
+        }
+
+        // Actualizar el comentario
+        comentario.setTexto(comentarioDTO.getTexto());
+        comentarioRepository.save(comentario);
+
+        return "Comentario actualizado con éxito.";
+    }
+
+
+}

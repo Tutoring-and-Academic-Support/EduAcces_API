@@ -11,5 +11,5 @@ public interface EstudianteCursoRepository extends JpaRepository<EstudianteCurso
     boolean existsByEstudianteIdAndCursoId(Long estudianteId, Long cursoId);
 
     void deleteByEstudianteIdAndCursoId(Long estudianteId, Long cursoId);
-}
 
+}

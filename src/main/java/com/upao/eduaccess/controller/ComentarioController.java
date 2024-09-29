@@ -12,46 +12,26 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 
-@Validated
 @RestController
-@RequestMapping("/comentarios")
+@Validated
+@RequestMapping("/comentarios")  // Añadimos un prefijo a las rutas para mayor claridad
 public class ComentarioController {
 
     @Autowired
     private ComentarioService comentarioService;
 
-    // Endpoint para moderar comentarios
-    @PostMapping("/moderar")
-    public ResponseEntity<String> moderarComentario(
-            @RequestParam Long comentarioId,
-            @RequestParam String action,
-            @RequestParam Long tutorId) {
 
-        String respuesta = comentarioService.moderarComentario(comentarioId, action, tutorId);
-        return ResponseEntity.ok(respuesta);
-    }
-
-    // Publicar comentario usando ComentarioDTO
-    @PostMapping("/publicar")
-    public ResponseEntity<String> publicarComentario(
-            @RequestParam Long estudianteId,
-            @RequestParam Long materialId,
-            @RequestParam String comentarioTexto) {
-
-        String respuesta = comentarioService.publicarComentarioCurso(estudianteId, materialId, comentarioTexto);
-        return ResponseEntity.ok(respuesta);
-    }
 
     // Obtener comentarios de un curso específico
     @GetMapping("/curso/{cursoId}")
-    public ResponseEntity<List<ComentarioDTO>> obtenerComentariosPorCurso(@PathVariable Long cursoId) {
+    public ResponseEntity<List<ComentarioDTO>> obtenerComentariosPorCurso (@PathVariable Long cursoId){
         List<ComentarioDTO> comentarios = comentarioService.obtenerComentariosPorCurso(cursoId);
         return ResponseEntity.ok(comentarios);
     }
 
     // Eliminar comentario por ID
     @DeleteMapping("/eliminar/{comentarioId}")
-    public ResponseEntity<String> eliminarComentario(@PathVariable Long comentarioId) {
+    public ResponseEntity<String> eliminarComentario (@PathVariable Long comentarioId){
         String response = comentarioService.eliminarComentario(comentarioId);
         if (response.equals("Comentario eliminado con éxito.")) {
             return ResponseEntity.ok(response);
@@ -61,9 +41,21 @@ public class ComentarioController {
     }
 
     @PostMapping("/responder")
-    public ResponseEntity<String> responderComentario(@RequestBody RespuestaComentarioDTO respuestaComentarioDTO) {
+    public ResponseEntity<String> responderComentario (@RequestBody RespuestaComentarioDTO respuestaComentarioDTO){
         String respuesta = comentarioService.responderComentario(respuestaComentarioDTO);
         return ResponseEntity.ok(respuesta);
+    }
+
+    // Editar comentario
+    @PutMapping("/editar/{comentarioId}")
+    public ResponseEntity<String> editarComentario(@PathVariable Long comentarioId, @Valid @RequestBody ComentarioDTO comentarioDTO) {
+        try {
+            String respuesta = comentarioService.editarComentario(comentarioId, comentarioDTO);
+            return ResponseEntity.ok(respuesta);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+
     }
 }
 

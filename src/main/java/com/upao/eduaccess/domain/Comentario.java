@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -28,15 +27,4 @@ public class Comentario {
     @ManyToOne
     @JoinColumn(name = "curso_id", referencedColumnName = "id", nullable = false)
     private Curso curso;
-
-    @ManyToOne
-    @JoinColumn(name = "comentario_padre_id", referencedColumnName = "id")
-    private Comentario comentarioPadre; // Agregado: referencia al comentario padre si es una respuesta
-
-    @OneToMany(mappedBy = "comentarioPadre", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comentario> respuestas; // Agregado: lista de respuestas asociadas a este comentario
-
-    @ManyToOne
-    @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
-    private Estudiante estudiante; // Relación con el estudiante que hizo el comentario
 }

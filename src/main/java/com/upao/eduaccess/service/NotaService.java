@@ -29,7 +29,6 @@ public class NotaService {
 
         Nota nota = notaMapper.toEntity(notaDTO);
         nota.setMaterial(material);
-        nota.setFecha(new Date()); // Asignar fecha actual
 
         Nota savedNota = notaRepository.save(nota);
         return notaMapper.toDTO(savedNota);
@@ -41,7 +40,6 @@ public class NotaService {
                 .orElseThrow(() -> new ResourceNotFoundException("Nota no encontrada con id: " + id));
 
         existingNota.setTexto(notaDTO.getTexto()); // Actualizar texto
-        existingNota.setFecha(new Date()); // Actualizar la fecha a la actual
 
         Nota updatedNota = notaRepository.save(existingNota);
         return notaMapper.toDTO(updatedNota);

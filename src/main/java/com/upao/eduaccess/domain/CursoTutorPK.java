@@ -1,6 +1,8 @@
 package com.upao.eduaccess.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -19,4 +21,3 @@ public class CursoTutorPK implements Serializable {
     @JoinColumn(name = "id_tutor", referencedColumnName = "id_tutor")
     private Tutor tutor;
 }
-

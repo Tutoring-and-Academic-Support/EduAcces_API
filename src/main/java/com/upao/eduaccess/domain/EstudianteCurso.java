@@ -2,6 +2,7 @@ package com.upao.eduaccess.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.util.Date;
 
 @Data
@@ -24,7 +25,7 @@ public class EstudianteCurso {
 
     @Column(name = "fecha", nullable = false)
     private Date fecha;
-}
 
+}
 
 
