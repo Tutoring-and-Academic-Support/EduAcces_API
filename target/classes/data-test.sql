@@ -1,13 +1,7 @@
-INSERT INTO users (email, password) VALUES
-                                        ('luis.rodriguez@upao.edu', 'password123'),
-                                        ('ana.torres@upao.edu', 'password123'),
-                                        ('jose.vega@upao.edu', 'password123')
-    ON CONFLICT DO NOTHING;
-
-INSERT INTO estudiante (user_id, ciclo, nombre, contraseña, email) VALUES
-                                                                       (1, 1, 'Luis Rodríguez', 'password123', 'luis.rodriguez@upao.edu'),
-                                                                       (2, 2, 'Ana Torres', 'password123', 'ana.torres@upao.edu'),
-                                                                       (3, 3, 'José Vega', 'password123', 'jose.vega@upao.edu')
+INSERT INTO estudiante (ciclo, nombre, contraseña, email) VALUES
+                                                              (1, 'Luis Rodríguez', 'password123', 'luis.rodriguez@upao.edu'),
+                                                              (2, 'Ana Torres', 'password123', 'ana.torres@upao.edu'),
+                                                              (3, 'José Vega', 'password123', 'jose.vega@upao.edu')
     ON CONFLICT DO NOTHING;
 
 
