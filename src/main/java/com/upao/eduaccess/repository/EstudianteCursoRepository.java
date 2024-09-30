@@ -7,5 +7,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EstudianteCursoRepository extends JpaRepository<EstudianteCurso, EstudianteCursoPK> {
+
     boolean existsByEstudianteIdAndCursoId(Long estudianteId, Long cursoId);
+
+    void deleteByEstudianteIdAndCursoId(Long estudianteId, Long cursoId);
 }
+
