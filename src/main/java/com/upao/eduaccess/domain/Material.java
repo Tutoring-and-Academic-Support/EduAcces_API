@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @Entity
@@ -29,5 +30,7 @@ public class Material {
     @ManyToOne
     @JoinColumn(name = "curso_id", referencedColumnName = "id", nullable = false)
     private Curso curso;
-}
 
+    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
+    private List<Nota> notas;  // Lista de notas asociadas a este material
+}
