@@ -12,12 +12,11 @@ public class NotificacionService {
     private JavaMailSender mailSender;
 
     public void enviarNotificacion(String emailDestino, String asunto, String mensaje) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(emailDestino);
-        mailMessage.setSubject(asunto);
-        mailMessage.setText(mensaje);
-
-        mailSender.send(mailMessage);
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(emailDestino);
+            mailMessage.setSubject(asunto);
+            mailMessage.setText(mensaje);
+            mailSender.send(mailMessage);
     }
 }
 
