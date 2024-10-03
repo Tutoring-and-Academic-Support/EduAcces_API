@@ -37,7 +37,7 @@ public class CursoEstudianteService {
     // Metodo para añadir o eliminar estudiantes de un curso usando DTOs
     public CursoEstudianteResponseDTO modificarAccesoEstudiante(Long tutorId, CursoEstudianteDTO dto) {
         // Verificar si la tutora tiene permisos para modificar el curso
-        boolean esTutorDelCurso = cursoTutorRepository.existsByCursoIdAndTutorId(dto.getCourseId(), tutorId);
+        boolean esTutorDelCurso = cursoTutorRepository.existsByCursoIdAndTutor_IdTutor(dto.getCourseId(), tutorId);
         if (!esTutorDelCurso) {
             return new CursoEstudianteResponseDTO(dto.getStudentId(), dto.getCourseId(), "No tienes permiso para modificar este curso.");
         }
