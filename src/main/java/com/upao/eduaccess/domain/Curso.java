@@ -15,7 +15,7 @@ public class Curso {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "nombre_curso", length = 100, nullable = false)
+    @Column(name = "nombre_curso", length = 100, nullable = false, unique = true)
     private String nombreCurso;
 
     @Column(name = "descripcion", columnDefinition = "TEXT")
