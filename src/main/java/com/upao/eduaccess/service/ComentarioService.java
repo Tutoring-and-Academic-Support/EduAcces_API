@@ -3,6 +3,8 @@ package com.upao.eduaccess.service;
 import com.upao.eduaccess.dto.ComentarioDTO;
 import com.upao.eduaccess.domain.Comentario;
 import com.upao.eduaccess.domain.Curso;
+import com.upao.eduaccess.dto.RespuestaComentarioDTO;
+import com.upao.eduaccess.exception.ResourceNotFoundException;
 import com.upao.eduaccess.repository.ComentarioRepository;
 import com.upao.eduaccess.repository.CursoRepository;
 import com.upao.eduaccess.repository.EstudianteCursoRepository;
@@ -175,6 +177,35 @@ public class ComentarioService {
         } else {
             return "Comentario no encontrado.";
         }
+    }
+
+    public String responderComentario(RespuestaComentarioDTO respuestaComentarioDTO) {
+        // Validar que el comentario exista
+        Comentario comentarioExistente = comentarioRepository.findById(respuestaComentarioDTO.getComentarioId())
+                .orElseThrow(() -> new ResourceNotFoundException("Comentario no encontrado con id: " + respuestaComentarioDTO.getComentarioId()));
+
+        // Validar que la respuesta no esté vacía
+        if (respuestaComentarioDTO.getRespuesta() == null || respuestaComentarioDTO.getRespuesta().trim().isEmpty()) {
+            return "El comentario no puede estar vacío.";
+        }
+
+        // Validar comentario duplicado
+        boolean duplicado = comentarioRepository.existsByTextoAndCursoIdAndAutor(respuestaComentarioDTO.getRespuesta(),
+                comentarioExistente.getCurso().getId(), respuestaComentarioDTO.getAutor());
+        if (duplicado) {
+            return "Este comentario ya ha sido publicado.";
+        }
+
+        // Crear la respuesta al comentario
+        Comentario respuestaComentario = new Comentario();
+        respuestaComentario.setTexto(respuestaComentarioDTO.getRespuesta());
+        respuestaComentario.setFecha(new Date());
+        respuestaComentario.setCurso(comentarioExistente.getCurso());
+        respuestaComentario.setAutor(respuestaComentarioDTO.getAutor()); // Establecer el autor (tutor o estudiante)
+
+        comentarioRepository.save(respuestaComentario);
+
+        return "Respuesta publicada con éxito.";
     }
 }
 

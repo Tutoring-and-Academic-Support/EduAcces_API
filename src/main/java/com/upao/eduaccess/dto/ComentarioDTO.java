@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class ComentarioDTO {
@@ -21,5 +22,10 @@ public class ComentarioDTO {
     private Long estudianteId;
 
     private Date fecha;
+
+    @NotBlank(message = "El autor es obligatorio.")
+    private String autor; // Nombre del autor del comentario
+
+    private List<ComentarioDTO> respuestas; // Lista de respuestas asociadas al comentario
 }
 
