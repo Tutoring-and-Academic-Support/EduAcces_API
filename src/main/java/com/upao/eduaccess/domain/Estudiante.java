@@ -27,6 +27,10 @@ public class Estudiante {
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
+
     @OneToMany(mappedBy = "estudiante")
     private List<EstudianteCurso> estudianteCursos;
 }
