@@ -16,5 +16,8 @@ public class CursoEstudianteResponseDTO {
         this.courseId = courseId;
         this.message = "El estudiante se ha matriculado en el curso.";
     }
+
+    public CursoEstudianteResponseDTO() {
+    }
 }
 

@@ -23,10 +23,9 @@ public class CursoEstudianteMapper {
     // Convertir de EstudianteCurso a CursoEstudianteResponseDTO
     public CursoEstudianteResponseDTO toResponseDTO(EstudianteCurso estudianteCurso, String message) {
         CursoEstudianteResponseDTO responseDTO = new CursoEstudianteResponseDTO();
-        responseDTO.setStudentId(estudianteCurso.getId().getEstudiante().getId());
-        responseDTO.setCourseId(estudianteCurso.getId().getCurso().getId());
+        responseDTO.setStudentId(estudianteCurso.getId().getIdEstudiante());
+        responseDTO.setCourseId(estudianteCurso.getId().getIdCurso());
         responseDTO.setMessage(message);
         return responseDTO;
     }
 }
-

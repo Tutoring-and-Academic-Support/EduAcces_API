@@ -1,6 +1,7 @@
 package com.upao.eduaccess.controller;
 
 import com.upao.eduaccess.dto.ComentarioDTO;
+import com.upao.eduaccess.dto.RespuestaComentarioDTO;
 import com.upao.eduaccess.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,12 @@ public class ComentarioController {
         } else {
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @PostMapping("/responder")
+    public ResponseEntity<String> responderComentario(@RequestBody RespuestaComentarioDTO respuestaComentarioDTO) {
+        String respuesta = comentarioService.responderComentario(respuestaComentarioDTO);
+        return ResponseEntity.ok(respuesta);
     }
 }
 
