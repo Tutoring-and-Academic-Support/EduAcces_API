@@ -19,7 +19,7 @@ public class SwaggerAPIConfig {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        // Definir el servidor de desarrollo
+        // Servidor de desarrollo
         Server devServer = new Server();
         devServer.setUrl(devUrl);
         devServer.setDescription("Development Server");
