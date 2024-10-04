@@ -18,3 +18,4 @@ public class Role {
     @Column(name = "name", nullable = false, unique = true)
     private TipoRole name;  // Enum con los roles: TUTOR, ESTUDIANTE
 }
+
