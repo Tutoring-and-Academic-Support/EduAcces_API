@@ -1,7 +1,12 @@
 package com.upao.eduaccess.controller;
 
+import com.upao.eduaccess.domain.Comentario;
 import com.upao.eduaccess.dto.ComentarioDTO;
+import com.upao.eduaccess.dto.ComentarioEditRequestDTO;
+import com.upao.eduaccess.mapper.ComentarioMapper;
 import com.upao.eduaccess.service.ComentarioService;
+import com.upao.eduaccess.service.ComentarioTutorService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +23,8 @@ public class ComentarioController {
 
     @Autowired
     private ComentarioService comentarioService;
+    @Autowired
+    private ComentarioTutorService comentarioTutorService;
 
     // Publicar comentario usando ComentarioDTO
     @PostMapping("/publicar")
@@ -59,5 +66,17 @@ public class ComentarioController {
         }
     }
 
-}
+    //edita comentario tutor
+    @PutMapping("/{comentarioId}")
+    public ResponseEntity<Comentario> editComentario(
+            @PathVariable Long comentarioId,
+            @Valid @RequestBody ComentarioEditRequestDTO dto) {
+
+        // Usar comentarioTutorService en lugar de comentarioService
+        Comentario comentarioActualizado = comentarioTutorService.editComentario(comentarioId, dto);
+
+        return new ResponseEntity<>(comentarioActualizado, HttpStatus.OK);
+    }
+
+    }
 

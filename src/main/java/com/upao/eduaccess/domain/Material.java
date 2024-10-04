@@ -1,5 +1,6 @@
 package com.upao.eduaccess.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.upao.eduaccess.enums.TipoMaterial;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Material {
     @Column(name = "file_path", nullable = false)
     private String filePath;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "curso_id", referencedColumnName = "id", nullable = false)
     private Curso curso;
