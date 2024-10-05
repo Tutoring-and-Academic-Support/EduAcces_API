@@ -22,39 +22,58 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig {
-
-    private final TokenProvider tokenProvider;
-    private final JWTFilter jwtRequestFilter;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    public WebSecurityConfig(TokenProvider tokenProvider, JWTFilter jwtRequestFilter, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
-        this.tokenProvider = tokenProvider;
-        this.jwtRequestFilter = jwtRequestFilter;
-        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
-    }
-
+    //"""
+// private final TokenProvider tokenProvider;
+//    private final JWTFilter jwtRequestFilter;
+//    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//
+//    public WebSecurityConfig(TokenProvider tokenProvider, JWTFilter jwtRequestFilter, JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+//        this.tokenProvider = tokenProvider;
+//        this.jwtRequestFilter = jwtRequestFilter;
+//        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .cors(Customizer.withDefaults())
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/auth/*", "/swagger-ui/", "/v3/api-docs/*").permitAll()
+//                        .anyRequest().authenticated())
+//                .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+//                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+//
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
+// """
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())  // Habilitar CORS si es necesario
+                .csrf(csrf -> csrf.disable())  // Deshabilitar CSRF si no es necesario
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated())
-                .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))
+                        // Permitir acceso a Swagger y API Docs sin autenticación
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui.html").permitAll()
+                        // Otras rutas requerirán autenticación
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .httpBasic(httpBasic -> httpBasic.disable())  // Deshabilitar autenticación básica
+                .formLogin(formLogin -> formLogin.disable());  // Deshabilitar login basado en formularios
+
 
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
     }
 }
