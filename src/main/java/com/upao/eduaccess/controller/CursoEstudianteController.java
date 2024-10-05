@@ -19,10 +19,10 @@ public class CursoEstudianteController {
     public ResponseEntity<CursoEstudianteResponseDTO> modificarAccesoEstudiante(
             @RequestParam Long tutorId,
             @RequestBody CursoEstudianteDTO cursoEstudianteDTO) {
-
         CursoEstudianteResponseDTO respuesta = cursoEstudianteService.modificarAccesoEstudiante(tutorId, cursoEstudianteDTO);
         return ResponseEntity.ok(respuesta);
     }
+
 }
 
 

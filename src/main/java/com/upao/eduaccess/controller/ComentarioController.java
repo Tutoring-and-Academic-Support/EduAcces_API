@@ -36,7 +36,7 @@ public class ComentarioController {
     public ResponseEntity<String> publicarComentario(
             @RequestParam Long estudianteId,
             @RequestParam Long materialId,
-            @RequestParam String comentarioTexto) {
+            @RequestBody String comentarioTexto) {
 
         String respuesta = comentarioService.publicarComentarioCurso(estudianteId, materialId, comentarioTexto);
         return ResponseEntity.ok(respuesta);
