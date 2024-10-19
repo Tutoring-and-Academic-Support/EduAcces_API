@@ -73,7 +73,7 @@ public class ComentarioService {
         comentarioRepository.save(comentario);
 
         // Obtener el correo del tutor y enviar la notificación
-        String emailTutor = curso.getCursoTutores().get(0).getTutor().getEmail();  // Asume que el curso tiene al menos un tutor
+        String emailTutor = curso.getCursoTutores().get(0).getTutor().getUser().getEmail();  // Asume que el curso tiene al menos un tutor
         notificacionService.enviarNotificacion(
                 emailTutor,
                 "Nuevo comentario publicado",

@@ -55,7 +55,7 @@ public class MaterialService {
         // Enviar la notificación al tutor (igual que en la respuesta anterior)
         String emailTutor = curso.getCursoTutores().stream()
                 .findFirst()
-                .map(t -> t.getTutor().getEmail())
+                .map(t -> t.getTutor().getUser().getEmail())
                 .orElse(null);
 
         if (emailTutor != null) {

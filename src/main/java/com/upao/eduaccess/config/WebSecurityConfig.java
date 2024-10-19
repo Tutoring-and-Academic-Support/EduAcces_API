@@ -66,7 +66,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Permitir acceso a Swagger y API Docs sin autenticación
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/v3/api-docs.yaml", "/swagger-ui.html").permitAll()
-                        // Otras rutas requerirán autenticación
+                        // Permitir acceso sin autenticación al endpoint de registro y a Swagger
+                        .requestMatchers("/registrar/**").permitAll()  // Permitir todos los sub-endpoints de registrar
+                        // Cualquier otra solicitud requerirá autenticación
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
