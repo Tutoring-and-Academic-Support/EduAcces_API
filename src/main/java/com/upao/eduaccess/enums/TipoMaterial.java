@@ -6,6 +6,5 @@ public enum TipoMaterial {
     TEXTO,
     AUDIO,
     IMAGEN,
-    CUESTIONARIO,
-    PRESENTACION
+    CUESTIONARIO
 }

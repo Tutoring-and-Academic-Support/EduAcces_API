@@ -15,25 +15,12 @@ public class ComentarioMapper {
         dto.setId(comentario.getId());
         dto.setTexto(comentario.getTexto());
         dto.setFecha(comentario.getFecha());
-        dto.setAutor(comentario.getAutor()); // Se supone que `autor` es un campo adicional que tiene `Comentario`.
-
+        dto.setCursoId(comentario.getCurso().getId());
         return dto;
     }
 
     public List<ComentarioDTO> toDTOList(List<Comentario> comentarios) {
         return comentarios.stream().map(this::toDTO).collect(Collectors.toList());
     }
-
-    // Convertir de DTO `ComentarioDTO` a entidad `Comentario`
-    public Comentario toEntity(ComentarioDTO dto) {
-        Comentario comentario = new Comentario();
-        comentario.setId(dto.getId());
-        comentario.setTexto(dto.getTexto());
-        comentario.setFecha(dto.getFecha());
-        comentario.setAutor(dto.getAutor());
-        // Nota: Las relaciones como `Curso` deben ser manejadas en el servicio, no en el mapper.
-        return comentario;
-    }
 }
-
 

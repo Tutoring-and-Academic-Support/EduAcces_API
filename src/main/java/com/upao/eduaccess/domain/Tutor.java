@@ -30,10 +30,53 @@ public class Tutor {
     @OneToMany(mappedBy = "tutor")
     private List<CursoTutor> cursoTutores;
 
-    // Relacion con User
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
+	public Long getIdTutor() {
+		return idTutor;
+	}
+
+	public void setIdTutor(Long idTutor) {
+		this.idTutor = idTutor;
+	}
+
+	public String getDepartamento() {
+		return departamento;
+	}
+
+	public void setDepartamento(String departamento) {
+		this.departamento = departamento;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getContraseña() {
+		return contraseña;
+	}
+
+	public void setContraseña(String contraseña) {
+		this.contraseña = contraseña;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public List<CursoTutor> getCursoTutores() {
+		return cursoTutores;
+	}
+
+	public void setCursoTutores(List<CursoTutor> cursoTutores) {
+		this.cursoTutores = cursoTutores;
+	}
 
 }
 

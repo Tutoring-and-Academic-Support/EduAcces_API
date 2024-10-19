@@ -12,8 +12,10 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class EstudianteCursoPK implements Serializable {
 
+    @Column(name = "id_estudiante")
     private Long idEstudiante;
 
+    @Column(name = "id_curso")
     private Long idCurso;
 }
 

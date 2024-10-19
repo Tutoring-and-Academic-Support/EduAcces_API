@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "estudiante")
 public class Estudiante {
 
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
@@ -27,12 +27,56 @@ public class Estudiante {
     @Column(name = "email", length = 255, nullable = false, unique = true)
     private String email;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private User user;
-
     @OneToMany(mappedBy = "estudiante")
     private List<EstudianteCurso> estudianteCursos;
+    
+    public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public int getCiclo() {
+		return ciclo;
+	}
+
+	public void setCiclo(int ciclo) {
+		this.ciclo = ciclo;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getContraseña() {
+		return contraseña;
+	}
+
+	public void setContraseña(String contraseña) {
+		this.contraseña = contraseña;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public List<EstudianteCurso> getEstudianteCursos() {
+		return estudianteCursos;
+	}
+
+	public void setEstudianteCursos(List<EstudianteCurso> estudianteCursos) {
+		this.estudianteCursos = estudianteCursos;
+	}
 }
 
 

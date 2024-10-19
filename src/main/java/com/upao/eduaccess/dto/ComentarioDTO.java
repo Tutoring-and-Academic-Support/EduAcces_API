@@ -5,13 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
 public class ComentarioDTO {
 
-    private Long id;  // El ID puede no ser necesario en la creación, pero útil para obtener o eliminar comentarios
-
+    private Long id; 
+    
     @NotBlank(message = "El texto del comentario no puede estar vacío.")
     private String texto;
 
@@ -23,9 +22,46 @@ public class ComentarioDTO {
 
     private Date fecha;
 
-    @NotBlank(message = "El autor es obligatorio.")
-    private String autor; // Nombre del autor del comentario
+	public Long getId() {
+		return id;
+	}
 
-    private List<ComentarioDTO> respuestas; // Lista de respuestas asociadas al comentario
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTexto() {
+		return texto;
+	}
+
+	public void setTexto(String texto) {
+		this.texto = texto;
+	}
+
+	public Long getCursoId() {
+		return cursoId;
+	}
+
+	public void setCursoId(Long cursoId) {
+		this.cursoId = cursoId;
+	}
+
+	public Long getEstudianteId() {
+		return estudianteId;
+	}
+
+	public void setEstudianteId(Long estudianteId) {
+		this.estudianteId = estudianteId;
+	}
+
+	public Date getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(Date fecha) {
+		this.fecha = fecha;
+	}
+    
+    
 }
 

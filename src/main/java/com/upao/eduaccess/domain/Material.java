@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.sql.Date;
-import java.util.List;
 
 @Data
 @Entity
@@ -27,13 +26,50 @@ public class Material {
     @Column(name = "fecha_subida", nullable = false)
     private Date fechaSubida;
 
-    @Column(name = "file_path", nullable = false)
-    private String filePath;
-
     @ManyToOne
     @JoinColumn(name = "curso_id", referencedColumnName = "id", nullable = false)
     private Curso curso;
 
-    @OneToMany(mappedBy = "material", cascade = CascadeType.ALL)
-    private List<Nota> notas;  // Lista de notas asociadas a este material
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+
+	public TipoMaterial getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoMaterial tipo) {
+		this.tipo = tipo;
+	}
+
+	public Date getFechaSubida() {
+		return fechaSubida;
+	}
+
+	public void setFechaSubida(Date fechaSubida) {
+		this.fechaSubida = fechaSubida;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
+	}
+    
+    
 }
+
