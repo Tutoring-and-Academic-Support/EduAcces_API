@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
 
+
 @RestController
 @Validated
 @RequestMapping("/comentarios")  // Añadimos un prefijo a las rutas para mayor claridad

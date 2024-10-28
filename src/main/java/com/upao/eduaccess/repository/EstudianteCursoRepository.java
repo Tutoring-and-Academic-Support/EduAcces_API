@@ -2,6 +2,9 @@ package com.upao.eduaccess.repository;
 
 import com.upao.eduaccess.domain.EstudianteCurso;
 import com.upao.eduaccess.domain.EstudianteCursoPK;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

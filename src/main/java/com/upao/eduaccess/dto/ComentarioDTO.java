@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 public class ComentarioDTO {
 
-    private Long id;  // El ID puede no ser necesario en la creación, pero útil para obtener o eliminar comentarios
+    private Long id;
 
     @NotBlank(message = "El texto del comentario no puede estar vacío.")
     private String texto;
