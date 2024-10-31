@@ -2,7 +2,6 @@ package com.upao.eduaccess.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.util.Date;
 
 @Data
@@ -27,3 +26,4 @@ public class CursoTutor {
     @Column(name = "fecha_termino", nullable = false)
     private Date fechaTermino;
 }
+
