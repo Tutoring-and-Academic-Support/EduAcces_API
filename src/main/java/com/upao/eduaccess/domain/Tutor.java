@@ -21,11 +21,8 @@ public class Tutor {
     @Column(name = "nombre", length = 100, nullable = false)
     private String nombre;
 
-    @Column(name = "contraseña", length = 255, nullable = false)
-    private String contraseña;
-
-    @Column(name = "email", length = 255, nullable = false, unique = true)
-    private String email;
+    @Column(name = "apellidos", length = 100, nullable = false)
+    private String apellidos;
 
     @OneToMany(mappedBy = "tutor")
     private List<CursoTutor> cursoTutores;

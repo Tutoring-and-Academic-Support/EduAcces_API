@@ -31,4 +31,8 @@ public class User {
     // Relación uno a uno con Tutor (si el usuario es tutor)
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Tutor tutor;
+
+    public String getEmail() {return email;}
+    public String getPassword() {return password;}
 }
+
