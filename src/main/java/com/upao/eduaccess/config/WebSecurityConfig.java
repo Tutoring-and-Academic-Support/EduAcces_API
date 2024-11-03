@@ -1,13 +1,11 @@
 package com.upao.eduaccess.config;
 
-import com.upao.eduaccess.security.JWTConfigurer;
 import com.upao.eduaccess.security.JWTFilter;
 import com.upao.eduaccess.security.JwtAuthenticationEntryPoint;
 import com.upao.eduaccess.security.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,15 +34,18 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
-                .httpBasic(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
+                .cors()  // Habilitar CORS si es necesario
+                .and()
+                .csrf().disable()  // Deshabilitar CSRF si no es necesario
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated())
-                .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                        .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Permitir acceso sin autenticación a estas rutas
+                        .anyRequest().authenticated()  // Proteger todas las demás rutas
+                )
+                .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)  // Manejo de excepciones de autenticación
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  // Configurar la política de sesión como sin estado (JWT)
+                .and()
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);  // Agregar el filtro de JWT antes del filtro de autenticación
 
         return http.build();
     }
@@ -59,3 +60,4 @@ public class WebSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
+

@@ -30,12 +30,11 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
-//nuevo
-    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
         try {
+            // Autenticar al usuario usando el AuthenticationManager
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginDTO.getEmail(),
@@ -43,17 +42,16 @@ public class AuthController {
                     )
             );
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            // Generar el token JWT
             String token = tokenProvider.createToken(authentication);
 
-            // Obtener el rol del usuario y devolver en el DTO
+            // Obtener el rol del usuario
             String role = userService.findUserByEmail(loginDTO.getEmail()).getRole().getName().toString();
 
-            AuthResponseDTO response = new AuthResponseDTO(token, role);
-            return ResponseEntity.ok(response);
+            // Respuesta con el token y el rol del usuario
+            return ResponseEntity.ok(new AuthResponseDTO(token, role));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponseDTO("Unauthorized", null));
         }
     }
-
 }
