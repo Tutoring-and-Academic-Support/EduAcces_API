@@ -4,10 +4,10 @@ INSERT INTO roles (name) VALUES
                              ('ESTUDIANTE')
 ON CONFLICT (name) DO NOTHING;
 
--- Inserción de usuarios (sin especificar el id) con contraseñas seguras
+-- Inserción de usuarios (sin especificar el id)
 INSERT INTO users (email, password, role_id) VALUES
-                                                 ('tutor1@eduaccess.com', 'Password@123', (SELECT id FROM roles WHERE name = 'TUTOR')),
-                                                 ('estudiante1@eduaccess.com', 'Estudiante@2023', (SELECT id FROM roles WHERE name = 'ESTUDIANTE'))
+                                                 ('tutor1@eduaccess.com', 'password123', (SELECT id FROM roles WHERE name = 'TUTOR')),
+                                                 ('estudiante1@eduaccess.com', 'password123', (SELECT id FROM roles WHERE name = 'ESTUDIANTE'))
 ON CONFLICT (email) DO NOTHING;
 
 -- Inserción de tutores (sin especificar el id_tutor)
@@ -27,8 +27,7 @@ INSERT INTO curso (nombre_curso, descripcion, estado, valoracion) VALUES
 INSERT INTO curso_tutor (id_curso, id_tutor, fecha_asignacion, fecha_termino) VALUES
     ((SELECT id FROM curso WHERE nombre_curso = 'Matemáticas Básicas'),
      (SELECT id_tutor FROM tutor WHERE nombre = 'Juan' AND apellidos = 'Lopez'),
-     '2023-01-01',
-     '2023-12-31');
+     '2023-01-01', '2023-12-31');
 
 -- Relación estudiante-curso
 INSERT INTO estudiante_curso (id_estudiante, id_curso, fecha) VALUES
@@ -53,12 +52,10 @@ INSERT INTO nota (texto, fecha, material_id) VALUES
      (SELECT id FROM material WHERE titulo = 'Introducción a Álgebra'));
 
 -- Inserción de pagos
-INSERT INTO pago (fecha_pago, monto_total) VALUES
-    ('2023-04-10', 150.00);
+INSERT INTO pago (id_pago, fecha_pago, monto_total) VALUES
+    (1, '2023-04-10', 150.00);
 
 -- Inserción de detalle de pago
 INSERT INTO detalle_pago (descripcion, cantidad_estudiantes, precio_por_estudiante, id_pago, id_tutor) VALUES
-    ('Pago del curso de matemáticas', 10, 15.00,
-     (SELECT id_pago FROM pago WHERE fecha_pago = '2023-04-10' AND monto_total = 150.00),
+    ('Pago del curso de matemáticas', 10, 15.00, 1,
      (SELECT id_tutor FROM tutor WHERE nombre = 'Juan' AND apellidos = 'Lopez'));
-

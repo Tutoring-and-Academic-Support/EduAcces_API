@@ -25,9 +25,6 @@ public class TokenProvider {
 
     private final UserRepository userRepository;
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-
     @Value("${jwt.expiration}")
     private long jwtExpiration;
 
@@ -35,9 +32,9 @@ public class TokenProvider {
 
     @PostConstruct
     public void init() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
-        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);  // Genera una clave segura automáticamente para HS512
     }
+
 
     public String createToken(Authentication authentication) {
         String email = authentication.getName();
@@ -65,5 +62,20 @@ public class TokenProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    //INVITAR ESTUDIANTE
+    public String crearInvitacionToken(String email){
+        return Jwts.builder()
+                .setSubject(email)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+                .compact();
+    }
+
+    public String getEmailFromToken(String token) {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+        return claims.getSubject();
+
     }
 }
