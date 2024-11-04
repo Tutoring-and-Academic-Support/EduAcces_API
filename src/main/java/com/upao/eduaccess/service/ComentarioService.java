@@ -30,8 +30,8 @@ public class ComentarioService {
     @Autowired
     private ComentarioMapper comentarioMapper;
 
-    @Autowired
-    private NotificacionService notificacionService; // Para enviar notificaciones
+   // @Autowired
+   // private NotificacionService notificacionService; // Para enviar notificaciones
 
     @Autowired
     private UserRepository userRepository; // Para verificar si el estudiante está inscrito
@@ -66,7 +66,7 @@ public class ComentarioService {
         }
         Curso curso = cursoOptional.get();
         comentario.setCurso(curso);
-
+/*
         // Guardar el comentario en la base de datos
         comentarioRepository.save(comentario);
 
@@ -76,7 +76,7 @@ public class ComentarioService {
                 emailTutor,
                 "Nuevo comentario publicado",
                 "Se ha publicado un nuevo comentario en uno de tus cursos."
-        );
+        );*/
 
         return "Comentario publicado con éxito.";
     }
@@ -152,13 +152,13 @@ public class ComentarioService {
         comentario.setFecha(new Date());
         comentario.setCurso(curso);
 
-        // Guardar el comentario
+    /*    // Guardar el comentario
         comentarioRepository.save(comentario);
         notificacionService.enviarNotificacion(
                 "tutora@ejemplo.com",
                 "Nuevo comentario publicado",
                 "Se ha publicado un nuevo comentario en uno de tus cursos."
-        );
+        );*/
         return "Comentario publicado con éxito.";
     }
 
@@ -176,7 +176,7 @@ public class ComentarioService {
             return "Comentario no encontrado.";
         }
     }
-
+/*
     public String responderComentario(RespuestaComentarioDTO respuestaComentarioDTO) {
         // Validar que el comentario exista
         Comentario comentarioExistente = comentarioRepository.findById(respuestaComentarioDTO.getComentarioId())
@@ -204,6 +204,6 @@ public class ComentarioService {
         comentarioRepository.save(respuestaComentario);
 
         return "Respuesta publicada con éxito.";
-    }
+    }*/
 }
 

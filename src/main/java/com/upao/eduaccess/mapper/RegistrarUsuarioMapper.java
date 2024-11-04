@@ -7,17 +7,19 @@ import com.upao.eduaccess.domain.User;
 import com.upao.eduaccess.dto.RegistrarEstudianteDTO;
 import com.upao.eduaccess.dto.RegistrarTutorDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
 public class RegistrarUsuarioMapper {
 
+    private final PasswordEncoder passwordEncoder; // Inyectamos PasswordEncoder
+
     public User toUserFromTutorDTO(RegistrarTutorDTO tutorDTO, Role role) {
         User user = new User();
-        user.setEmail(
-                tutorDTO.getEmail());
-        user.setPassword(tutorDTO.getPassword());
+        user.setEmail(tutorDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(tutorDTO.getPassword())); // Encriptamos la contraseña
         user.setRole(role);
         return user;
     }
@@ -43,11 +45,8 @@ public class RegistrarUsuarioMapper {
     public User toUserFromEstudianteDTO(RegistrarEstudianteDTO estudianteDTO, Role role) {
         User user = new User();
         user.setEmail(estudianteDTO.getEmail());
-        user.setPassword(estudianteDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(estudianteDTO.getPassword())); // Encriptamos la contraseña
         user.setRole(role);
         return user;
     }
-
-
-
 }
