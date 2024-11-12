@@ -19,7 +19,7 @@ public class InvitacionService {
         for (String email : correoEstudiantes){
             String token = tokenProvider.crearInvitacionToken(email);
 
-            String enlaceInvitacion = "http://localhost:9090/api/registro-completar?token=" + token;
+            String enlaceInvitacion = "http://localhost:8080/api/registro-completar?token=" + token;
 
             String mensaje = "Has sido invitado a registrarte." +
                     "Completa tu registro en el siguiente enlace: " + enlaceInvitacion;

@@ -1,6 +1,6 @@
 package com.upao.eduaccess.config;
 
-/*import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -14,10 +14,10 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-@Configuration*/
+@Configuration
 public class SwaggerAPIConfig {
 
-    /*@Value("${eduaccess.openapi.dev-url}")
+    @Value("${eduaccess.openapi.dev-url}")
     private String devUrl;
 
     @Bean
@@ -57,5 +57,5 @@ public class SwaggerAPIConfig {
                 .servers(List.of(devServer))
                 .addSecurityItem(securityRequirement)
                 .components(components);
-    }*/
+    }
 }

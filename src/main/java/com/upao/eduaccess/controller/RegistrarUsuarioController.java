@@ -43,6 +43,15 @@ public class RegistrarUsuarioController {
         }
     }
 
+    @GetMapping("/registro-completar")
+    public ResponseEntity<String> completarRegistro(@RequestParam String token) {
+        if (!usuarioService.validarToken(token)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token inválido o expirado.");
+        }
+        // Aquí puedes devolver información necesaria para el frontend
+        return ResponseEntity.ok("Token válido. Procede con el registro.");
+    }
+
     @PostMapping("/estudiante")
     public ResponseEntity<String> registroEstudiante(@Valid @RequestBody RegistrarEstudianteDTO estudianteDTO, @RequestParam String token) {
         try {

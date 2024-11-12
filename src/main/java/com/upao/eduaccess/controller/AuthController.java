@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -29,27 +33,24 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponseDTO> login(@Valid @RequestBody LoginDTO loginDTO) {
-        try {
-            // Autenticar al usuario usando el AuthenticationManager
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginDTO.getEmail(),
-                            loginDTO.getPassword()
-                    )
-            );
+        // Autenticar al usuario usando el AuthenticationManager
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginDTO.getEmail(),
+                        loginDTO.getPassword()
+                )
+        );
 
-            // Generar el token JWT
-            String token = tokenProvider.createToken(authentication);
+        // Generar el token JWT
+        String token = tokenProvider.createToken(authentication);
 
-            // Obtener el rol del usuario
-            String role = userService.findUserByEmail(loginDTO.getEmail()).getRole().getName().toString();
+        // Obtener el rol del usuario
+        String role = userService.findUserByEmail(loginDTO.getEmail()).getRole().getName().toString();
 
-            // Respuesta con el token y el rol del usuario
-            return ResponseEntity.ok(new AuthResponseDTO(token, role));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponseDTO("Unauthorized", null));
-        }
+        // Respuesta con el token y el rol del usuario
+        return ResponseEntity.ok(new AuthResponseDTO(token, role));
     }
+
 }
 
 

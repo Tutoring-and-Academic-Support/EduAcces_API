@@ -111,6 +111,9 @@ public class TokenProvider {
     @Value("${jwt.expiration}")
     private long jwtExpiration;
 
+    @Value("${jwt.secret}")
+    private String jwtSecret;
+
     private Key key;
 
     @PostConstruct

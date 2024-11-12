@@ -31,7 +31,6 @@ public class RegistrarUsuarioService {
 
 
     public void registrarUsuarioEstudiante (RegistrarEstudianteDTO estudianteDTO, String token) {
-        existeCorreo(estudianteDTO.getEmail());
 
         if (!validarToken(token)){
             throw new RuntimeException("Token invalido o expirado");
@@ -40,6 +39,8 @@ public class RegistrarUsuarioService {
         String email = tokenProvider.getEmailFromToken(token);
         estudianteDTO.setEmail(email);
         estudianteDTO.setRole(TipoRole.ESTUDIANTE);
+
+        existeCorreo(estudianteDTO.getEmail());
 
         Role role = obtenerRole(TipoRole.ESTUDIANTE);
 
