@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -46,5 +47,21 @@ public class ComentarioController {
         } else {
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @PostMapping("/responder")
+    public ResponseEntity<String> responderComentario(@RequestBody RespuestaComentarioDTO respuestaComentarioDTO) {
+        String respuesta = comentarioService.responderComentario(respuestaComentarioDTO);
+        return ResponseEntity.ok(respuesta);
+    }
+
+
+    @PostMapping("/publicarEnMaterial")
+    public ResponseEntity<String> publicarComentarioEnMaterial(
+            @RequestParam Long estudianteId,
+            @RequestParam Long materialId,
+            @RequestBody String comentarioTexto) {
+        String respuesta = comentarioService.publicarComentarioMaterial(estudianteId, materialId, comentarioTexto);
+        return ResponseEntity.ok(respuesta);
     }
 }
