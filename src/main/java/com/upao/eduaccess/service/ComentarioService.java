@@ -1,15 +1,11 @@
 package com.upao.eduaccess.service;
 
+import com.upao.eduaccess.domain.*;
 import com.upao.eduaccess.dto.ComentarioDTO;
-import com.upao.eduaccess.domain.Comentario;
-import com.upao.eduaccess.domain.Curso;
 import com.upao.eduaccess.dto.RespuestaComentarioDTO;
 import com.upao.eduaccess.exception.ResourceNotFoundException;
-import com.upao.eduaccess.repository.ComentarioRepository;
-import com.upao.eduaccess.repository.CursoRepository;
-import com.upao.eduaccess.repository.EstudianteCursoRepository;
+import com.upao.eduaccess.repository.*;
 import com.upao.eduaccess.mapper.ComentarioMapper;
-import com.upao.eduaccess.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +26,13 @@ public class ComentarioService {
     private EstudianteCursoRepository estudianteCursoRepository;
 
     @Autowired
+    private MaterialRepository materialRepository;
+
+    @Autowired
     private ComentarioMapper comentarioMapper;
+
+    @Autowired
+    private EstudianteRepository estudianteRepository;
 
     @Autowired
     private NotificacionService notificacionService; // Para enviar notificaciones
@@ -207,5 +209,59 @@ public class ComentarioService {
 
         return "Respuesta publicada con éxito.";
     }
+
+    public String publicarComentarioMaterial(Long estudianteId, Long materialId, String comentarioTexto) {
+        // Verificar si el material existe
+        Optional<Material> materialOptional = materialRepository.findById(materialId);
+        if (materialOptional.isEmpty()) {
+            return "Material no encontrado.";
+        }
+        Material material = materialOptional.get();
+
+        // Validar si el estudiante está inscrito en el curso relacionado con el material
+        Curso curso = material.getCurso();
+        boolean estaInscrito = estudianteCursoRepository.existsByEstudianteIdAndCursoId(estudianteId, curso.getId());
+        if (!estaInscrito) {
+            return "No estás inscrito en el curso relacionado con este material.";
+        }
+
+        // Validar la longitud del comentario
+        if (comentarioTexto.length() > 500) {
+            return "El comentario excede el límite de caracteres permitidos (500 caracteres).";
+        }
+
+        // Validar contenido ofensivo
+        if (contieneContenidoOfensivo(comentarioTexto)) {
+            return "El comentario contiene contenido ofensivo y no puede ser publicado.";
+        }
+
+        // Crear el comentario
+        Comentario comentario = new Comentario();
+        comentario.setTexto(comentarioTexto);
+        comentario.setFecha(new Date());
+        comentario.setMaterial(material); // Asociar el comentario al material
+
+        // Guardar el comentario
+        comentarioRepository.save(comentario);
+
+        // **Notificar a todos los tutores del curso**
+        if (!curso.getCursoTutores().isEmpty()) {
+            for (CursoTutor cursoTutor : curso.getCursoTutores()) {
+                Tutor tutor = cursoTutor.getTutor();
+                notificacionService.enviarNotificacion(
+                        tutor.getEmail(),
+                        "Nuevo comentario en material",
+                        "Un estudiante ha publicado un comentario en el material '"
+                                + material.getTitulo() + "' del curso '" + curso.getNombreCurso()
+                                + "'. Contenido del comentario: " + comentarioTexto
+                );
+            }
+        }
+
+        return "Comentario publicado con éxito en el material.";
+    }
+
+
+
 }
 
