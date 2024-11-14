@@ -2,6 +2,11 @@ package com.upao.eduaccess.service;
 
 import com.upao.eduaccess.domain.*;
 import com.upao.eduaccess.dto.ComentarioDTO;
+import com.upao.eduaccess.domain.Comentario;
+import com.upao.eduaccess.domain.Curso;
+import com.upao.eduaccess.repository.ComentarioRepository;
+import com.upao.eduaccess.repository.CursoRepository;
+import com.upao.eduaccess.repository.EstudianteCursoRepository;
 import com.upao.eduaccess.dto.RespuestaComentarioDTO;
 import com.upao.eduaccess.exception.ResourceNotFoundException;
 import com.upao.eduaccess.repository.*;
@@ -70,7 +75,7 @@ public class ComentarioService {
         }
         Curso curso = cursoOptional.get();
         comentario.setCurso(curso);
-
+/*
         // Guardar el comentario en la base de datos
         comentarioRepository.save(comentario);
 
@@ -80,7 +85,7 @@ public class ComentarioService {
                 emailTutor,
                 "Nuevo comentario publicado",
                 "Se ha publicado un nuevo comentario en uno de tus cursos."
-        );
+        );*/
 
         return "Comentario publicado con éxito.";
     }
@@ -156,13 +161,13 @@ public class ComentarioService {
         comentario.setFecha(new Date());
         comentario.setCurso(curso);
 
-        // Guardar el comentario
+    /*    // Guardar el comentario
         comentarioRepository.save(comentario);
         notificacionService.enviarNotificacion(
                 "tutora@ejemplo.com",
                 "Nuevo comentario publicado",
                 "Se ha publicado un nuevo comentario en uno de tus cursos."
-        );
+        );*/
         return "Comentario publicado con éxito.";
     }
 
@@ -180,7 +185,7 @@ public class ComentarioService {
             return "Comentario no encontrado.";
         }
     }
-
+/*
     public String responderComentario(RespuestaComentarioDTO respuestaComentarioDTO) {
         // Validar que el comentario exista
         Comentario comentarioExistente = comentarioRepository.findById(respuestaComentarioDTO.getComentarioId())
@@ -208,6 +213,7 @@ public class ComentarioService {
         comentarioRepository.save(respuestaComentario);
 
         return "Respuesta publicada con éxito.";
+    }*/
     }
 
     public String publicarComentarioMaterial(Long estudianteId, Long materialId, String comentarioTexto) {
@@ -260,7 +266,6 @@ public class ComentarioService {
 
         return "Comentario publicado con éxito en el material.";
     }
-
 
 
 }

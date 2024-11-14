@@ -8,7 +8,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +21,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
         Map<String, Object> data = new HashMap<>();
-        data.put("timestamp", LocalDateTime.now());
+        data.put("timestamp", new Date()); // Reemplazo con java.util.Date que Jackson maneja sin problema
         data.put("status", 401);
         data.put("message", "Unauthorized");
 

@@ -1,6 +1,6 @@
 package com.upao.eduaccess.service;
 
-import com.upao.eduaccess.domain.Curso;
+/*import com.upao.eduaccess.domain.Curso;
 import com.upao.eduaccess.domain.Material;
 import com.upao.eduaccess.dto.MaterialDTO;
 import com.upao.eduaccess.exception.ResourceNotFoundException;
@@ -9,13 +9,13 @@ import com.upao.eduaccess.repository.CursoRepository;
 import com.upao.eduaccess.repository.MaterialRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service;*/
 
 import java.sql.Date;
 
-@Service
+//@Service
 public class MaterialService {
-
+/*
     @Autowired
     private MaterialRepository materialRepository;
 
@@ -55,7 +55,7 @@ public class MaterialService {
         // Enviar la notificación al tutor (igual que en la respuesta anterior)
         String emailTutor = curso.getCursoTutores().stream()
                 .findFirst()
-                .map(t -> t.getTutor().getEmail())
+                .map(t -> t.getTutor().getUser().getEmail())
                 .orElse(null);
 
         if (emailTutor != null) {
@@ -75,7 +75,7 @@ public class MaterialService {
 
         // Convertir la entidad guardada nuevamente a DTO para la respuesta
         return materialMapper.toDTO(savedMaterial);
-    }
+    }*/
 }
 
 
