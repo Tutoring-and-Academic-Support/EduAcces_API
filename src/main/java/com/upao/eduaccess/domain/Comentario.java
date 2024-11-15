@@ -39,4 +39,8 @@ public class Comentario {
     @ManyToOne
     @JoinColumn(name = "estudiante_id", referencedColumnName = "id")
     private Estudiante estudiante; // Relación con el estudiante que hizo el comentario
+
+    @ManyToOne
+    @JoinColumn(name = "material_id", referencedColumnName = "id", nullable = false)
+    private Material material; // Relación con el material donde se hizo el comentario
 }

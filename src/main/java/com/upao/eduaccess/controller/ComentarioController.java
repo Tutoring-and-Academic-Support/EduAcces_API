@@ -1,7 +1,6 @@
 package com.upao.eduaccess.controller;
 
 import com.upao.eduaccess.dto.ComentarioDTO;
-import com.upao.eduaccess.dto.RespuestaComentarioDTO;
 import com.upao.eduaccess.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,35 +10,25 @@ import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
-@Validated
 @RestController
-@RequestMapping("/comentarios")
+@Validated
+@RequestMapping("/comentarios")  // Añadimos un prefijo a las rutas para mayor claridad
 public class ComentarioController {
 
     @Autowired
     private ComentarioService comentarioService;
 
-    // Endpoint para moderar comentarios
-    @PostMapping("/moderar")
-    public ResponseEntity<String> moderarComentario(
-            @RequestParam Long comentarioId,
-            @RequestParam String action,
-            @RequestParam Long tutorId) {
-
-        String respuesta = comentarioService.moderarComentario(comentarioId, action, tutorId);
-        return ResponseEntity.ok(respuesta);
-    }
-
     // Publicar comentario usando ComentarioDTO
     @PostMapping("/publicar")
-    public ResponseEntity<String> publicarComentario(
-            @RequestParam Long estudianteId,
-            @RequestParam Long materialId,
-            @RequestParam String comentarioTexto) {
-
-        String respuesta = comentarioService.publicarComentarioCurso(estudianteId, materialId, comentarioTexto);
-        return ResponseEntity.ok(respuesta);
+    public ResponseEntity<String> publicarComentario(@Valid @RequestBody ComentarioDTO comentarioDTO) {
+        try {
+            String respuesta = comentarioService.publicarComentario(comentarioDTO);
+            return ResponseEntity.ok(respuesta);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 
     // Obtener comentarios de un curso específico
@@ -65,5 +54,14 @@ public class ComentarioController {
         String respuesta = comentarioService.responderComentario(respuestaComentarioDTO);
         return ResponseEntity.ok(respuesta);
     }
-}
 
+
+    @PostMapping("/publicarEnMaterial")
+    public ResponseEntity<String> publicarComentarioEnMaterial(
+            @RequestParam Long estudianteId,
+            @RequestParam Long materialId,
+            @RequestBody String comentarioTexto) {
+        String respuesta = comentarioService.publicarComentarioMaterial(estudianteId, materialId, comentarioTexto);
+        return ResponseEntity.ok(respuesta);
+    }
+}
