@@ -23,12 +23,21 @@ public class RegistrarUsuarioController {
     private InvitacionService invitacionService; // Corrección aquí
 
     @PostMapping("/tutor")
-    public ResponseEntity<String> registroTutor(@Valid @RequestBody RegistrarTutorDTO tutorDTO) {
+    public ResponseEntity<String> registrarTutor(@RequestBody @Valid RegistrarTutorDTO tutorDTO) {
         try {
+            System.out.println("Datos recibidos: " + tutorDTO);
+
+            // Llamamos al servicio para registrar al tutor
             usuarioService.registrarUsuarioTutor(tutorDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Tutor registrado exitosamente.");
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+            // Devolvemos una respuesta indicando que el registro fue exitoso
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Registro exitoso. Ahora puedes iniciar sesión.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // En caso de error, devolvemos un mensaje adecuado
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error al registrar el tutor: " + e.getMessage());
         }
     }
 
