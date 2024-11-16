@@ -54,6 +54,7 @@ public class RegistrarUsuarioService {
     }
 
     public void registrarUsuarioTutor(RegistrarTutorDTO tutorDTO) {
+        System.out.println("Iniciando registro de tutor con datos: " + tutorDTO);
         existeCorreo(tutorDTO.getEmail());
 
         if (tutorDTO.getRole() != null && tutorDTO.getRole() != TipoRole.TUTOR) {
@@ -69,6 +70,9 @@ public class RegistrarUsuarioService {
         Tutor tutor = usuarioMapper.toTutor(tutorDTO, user);
         user.setTutor(tutor);
         userRepository.save(user);
+
+        System.out.println("Tutor registrado exitosamente con ID: " + tutor.getIdTutor());
+
     }
 
     //METODO VALIDACIONES
@@ -86,4 +90,5 @@ public class RegistrarUsuarioService {
         return roleRepository.findByName(tipoRole)
                 .orElseThrow(() -> new RuntimeException("Role no encontrado."));
     }
+
 }
