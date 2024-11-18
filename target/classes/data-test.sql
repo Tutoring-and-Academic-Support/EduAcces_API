@@ -35,8 +35,8 @@ INSERT INTO material (id, titulo, tipo, fecha_subida, curso_id) VALUES
                                                                     (2, 'Conceptos Básicos de Física', 'VIDEO', '2023-06-01', 2);
 
 -- Inserción de comentarios
-INSERT INTO comentario (id, texto, fecha, autor, curso_id, estudiante_id) VALUES
-    (1, 'Excelente material, muy claro.', '2023-06-15', 'Estudiante Uno', 1, 1);
+INSERT INTO comentario (id, texto, fecha, autor, curso_id, estudiante_id, comentario_padre_id, material_id) VALUES
+    (1, 'Excelente material, muy claro.', '2023-06-15', 'Estudiante Uno', 1, 1, null, 1);
 
 -- Inserción de notas
 INSERT INTO nota (id, texto, fecha, material_id) VALUES

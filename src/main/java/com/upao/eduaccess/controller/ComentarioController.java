@@ -16,7 +16,7 @@ import java.util.Map;
 @Validated
 @RequestMapping("/comentarios")  // Añadimos un prefijo a las rutas para mayor claridad
 public class ComentarioController {
-
+/*
     @Autowired
     private ComentarioService comentarioService;
 
@@ -64,4 +64,6 @@ public class ComentarioController {
         String respuesta = comentarioService.publicarComentarioMaterial(estudianteId, materialId, comentarioTexto);
         return ResponseEntity.ok(respuesta);
     }
+
+ */
 }

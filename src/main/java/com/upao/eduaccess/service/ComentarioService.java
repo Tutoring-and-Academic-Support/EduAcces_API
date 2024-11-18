@@ -7,7 +7,6 @@ import com.upao.eduaccess.domain.Curso;
 import com.upao.eduaccess.repository.ComentarioRepository;
 import com.upao.eduaccess.repository.CursoRepository;
 import com.upao.eduaccess.repository.EstudianteCursoRepository;
-import com.upao.eduaccess.dto.RespuestaComentarioDTO;
 import com.upao.eduaccess.exception.ResourceNotFoundException;
 import com.upao.eduaccess.repository.*;
 import com.upao.eduaccess.mapper.ComentarioMapper;
@@ -18,9 +17,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class ComentarioService {
-
+//@Service
+public class ComentarioService {}
+/*
     @Autowired
     private ComentarioRepository comentarioRepository;
 
@@ -85,8 +84,8 @@ public class ComentarioService {
                 emailTutor,
                 "Nuevo comentario publicado",
                 "Se ha publicado un nuevo comentario en uno de tus cursos."
-        );*/
-
+        );
+/*
         return "Comentario publicado con éxito.";
     }
 
@@ -167,7 +166,9 @@ public class ComentarioService {
                 "tutora@ejemplo.com",
                 "Nuevo comentario publicado",
                 "Se ha publicado un nuevo comentario en uno de tus cursos."
-        );*/
+        );
+        */
+ /*
         return "Comentario publicado con éxito.";
     }
 
@@ -214,6 +215,8 @@ public class ComentarioService {
 
         return "Respuesta publicada con éxito.";
     }*/
+
+    /*
     }
 
     public String publicarComentarioMaterial(Long estudianteId, Long materialId, String comentarioTexto) {
@@ -269,4 +272,6 @@ public class ComentarioService {
 
 
 }
+*/
+
 
