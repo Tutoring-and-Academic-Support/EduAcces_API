@@ -11,4 +11,5 @@ public interface PaypalService {
     public HttpResponse<Order> captureOrder(String orderId) throws IOException;
     // tipo de retorno de captureORder "com.paypal.http.HttpResponse<Order>"
 
+    public String pagarPlan(Integer idPlan) throws IOException;
 }

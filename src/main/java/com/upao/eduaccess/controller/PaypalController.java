@@ -39,6 +39,11 @@ public class PaypalController {
         }
     }
 
+    @PostMapping("/pagar-plan/{idPlan}")
+    public String suscribirsePlan(@PathVariable Integer idPlan) throws IOException {
+        return paypalService.pagarPlan(idPlan);
+    }
+
     @GetMapping("/payment")
     public RedirectView handlePayment(@RequestParam String token) {
         try {
@@ -65,4 +70,6 @@ public class PaypalController {
             return new RedirectView("/error?message=Ocurrió un error durante el proceso de pago.");
         }
     }
+
+
 }

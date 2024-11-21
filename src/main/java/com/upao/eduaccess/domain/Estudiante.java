@@ -30,6 +30,10 @@ public class Estudiante {
 
     @OneToMany(mappedBy = "estudiante")
     private List<EstudianteCurso> estudianteCursos;
+
+    @ManyToMany(mappedBy = "estudiantes")
+    private List<GrupoEstudiantes> grupos;
+
 }
 
 

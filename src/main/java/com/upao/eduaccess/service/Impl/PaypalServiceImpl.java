@@ -5,8 +5,11 @@ import com.paypal.http.HttpResponse;
 import com.paypal.http.exceptions.HttpException;
 import com.paypal.core.PayPalHttpClient;
 import com.upao.eduaccess.config.PaypalConfig;
+import com.upao.eduaccess.domain.Plan;
+import com.upao.eduaccess.repository.PlanRepository;
 import com.upao.eduaccess.service.PaypalService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PaypalServiceImpl implements PaypalService {
 
+    private final PlanRepository planRepository;
     private final PayPalHttpClient payPalHttpClient;
-    @Autowired
-    public PaypalServiceImpl(PaypalConfig paypalConfig) {
-        this.payPalHttpClient = paypalConfig.payPalHttpClient();
-    }
 
 
     public String createOrder(double cost  ,String returnUrl, String cancelUrl) throws IOException {
@@ -68,5 +68,22 @@ public class PaypalServiceImpl implements PaypalService {
             System.err.println("Error al capturar el pago: " + e.getMessage());
             return null;
         }
+    }
+
+    @Override
+    public String pagarPlan(Integer idPlan) throws IOException {
+
+
+        Plan plan = planRepository.findById(idPlan).orElse(null);
+        if (plan == null) {
+            throw new NotFoundException("No se encontro el plan");
+        }
+        String returnUrl = "https://www.youtube.com/watch?v=hDml3GNFZKc";
+        String cancelUrl = "https://upao-grupo7-transaccional.atlassian.net/jira/software/projects/SCRUM/boards/1/backlog?selectedIssue=SCRUM-18";
+        String approvalUrl = "https://www.sandbox.paypal.com/checkoutnow?token=" + createOrder(plan.getPrecio(), returnUrl, cancelUrl);
+
+        return (approvalUrl);
+
+
     }
 }

@@ -32,5 +32,9 @@ public class Tutor {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
+    @OneToMany(mappedBy = "tutor")
+    private List<GrupoEstudiantes> grupos;
+
+
 }
 
