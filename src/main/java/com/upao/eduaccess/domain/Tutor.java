@@ -27,10 +27,19 @@ public class Tutor {
     @OneToMany(mappedBy = "tutor")
     private List<CursoTutor> cursoTutores;
 
+    @ManyToOne
+    @JoinColumn(name = "id_plan")
+    private Plan plan;
+
+
     // Relacion con User
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "tutor")
+    private List<GrupoEstudiantes> grupos;
+
 
 }
 
