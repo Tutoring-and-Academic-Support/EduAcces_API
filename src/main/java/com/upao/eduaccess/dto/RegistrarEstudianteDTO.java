@@ -1,6 +1,7 @@
 package com.upao.eduaccess.dto;
 
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
 import com.upao.eduaccess.enums.TipoRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -34,6 +35,7 @@ public class RegistrarEstudianteDTO {
     private TipoRole role;
 
     //ESTUDIANTE
-    @Min(value = 1, message = "Se ingresó un valor incorrecto.")
+    @Min(value = 1, message = "El ciclo debe ser al menos 1.")
+    @Max(value = 4, message = "El ciclo no puede ser mayor a 4.")
     private int ciclo;
 }

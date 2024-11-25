@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/registrar")
@@ -42,15 +44,21 @@ public class RegistrarUsuarioController {
     }
 
     @PostMapping("/invitaciones")
-    public ResponseEntity<String> enviarInvitacion(@RequestBody InvitacionDTO invitacionDTO) {
+    public ResponseEntity<Map<String, String>> enviarInvitacion(@RequestBody InvitacionDTO invitacionDTO) {
         try {
             List<String> correos = invitacionDTO.getCorreos();
             invitacionService.enviarInvitaciones(correos);
-            return new ResponseEntity<>("Invitaciones enviadas correctamente.", HttpStatus.OK);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Invitaciones enviadas correctamente.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Error al enviar invitaciones: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Error al enviar invitaciones: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
+
+
 
     @GetMapping("/registro-completar")
     public ResponseEntity<String> completarRegistro(@RequestParam String token) {

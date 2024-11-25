@@ -107,6 +107,13 @@
             <version>2.0.3</version> <!-- Asegúrate de que sea la misma versión que la de API -->
         </dependency>
 
+        <!-- Jakarta Mail (JavaMail) -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>jakarta.mail</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+
         <!-- JWT Tokens * -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
