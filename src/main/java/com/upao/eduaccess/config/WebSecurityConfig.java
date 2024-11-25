@@ -16,8 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import static org.springframework.web.servlet.function.RequestPredicates.headers;
 
 @Configuration
 @EnableWebSecurity
@@ -40,12 +43,13 @@ public class WebSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/login", "/registrar/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        //.anyRequest().authenticated())
-                        .anyRequest().permitAll())
+                        .requestMatchers("/auth/login", "/registrar/**", "/swagger-ui/**", "/v3/api-docs/**", "/paypal/**").permitAll()
+                        .anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+
+
 
         return http.build();
     }

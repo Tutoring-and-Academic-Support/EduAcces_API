@@ -1,6 +1,7 @@
 package com.upao.eduaccess.service;
 
 
+import com.upao.eduaccess.domain.Plan;
 import com.upao.eduaccess.dto.PlanRequest;
 import com.upao.eduaccess.dto.PlanResponse;
 
@@ -13,4 +14,7 @@ public interface PlanService {
     public PlanResponse update(PlanRequest planRequest, Integer idPlan);
     public List<PlanResponse> getAllPlan();
     public PlanResponse getPlanById(Integer idPlan);
+    // Nuevo método para obtener la entidad Plan
+    Plan getPlanEntityById(Integer idPlan);
+
 }

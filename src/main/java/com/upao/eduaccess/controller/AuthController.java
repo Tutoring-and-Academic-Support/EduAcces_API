@@ -1,5 +1,6 @@
 package com.upao.eduaccess.controller;
 
+import com.upao.eduaccess.domain.User;
 import com.upao.eduaccess.dto.AuthResponseDTO;
 import com.upao.eduaccess.dto.LoginDTO;
 import com.upao.eduaccess.security.TokenProvider;
@@ -45,10 +46,12 @@ public class AuthController {
         String token = tokenProvider.createToken(authentication);
 
         // Obtener el rol del usuario
+        User user = userService.findUserByEmail(loginDTO.getEmail());
         String role = userService.findUserByEmail(loginDTO.getEmail()).getRole().getName().toString();
+        Long id = user.getId();
 
         // Respuesta con el token y el rol del usuario
-        return ResponseEntity.ok(new AuthResponseDTO(token, role));
+        return ResponseEntity.ok(new AuthResponseDTO(token, role, id));
     }
 
 }

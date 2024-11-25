@@ -54,4 +54,11 @@ public class PlanServiceImpl implements PlanService {
     public PlanResponse getPlanById(Integer idPlan) {
         return planMapper.converttoresponse(planRepository.findById(idPlan).orElse(null));
     }
+
+    @Override
+    public Plan getPlanEntityById(Integer idPlan) {
+        return planRepository.findById(idPlan)
+                .orElseThrow(() -> new RuntimeException("Plan not found with id " + idPlan));
+    }
+
 }
