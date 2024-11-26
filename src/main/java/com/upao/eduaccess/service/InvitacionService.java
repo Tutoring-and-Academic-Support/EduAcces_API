@@ -3,6 +3,7 @@ package com.upao.eduaccess.service;
 import com.upao.eduaccess.security.TokenProvider;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +17,13 @@ public class InvitacionService {
     @Autowired
     private TokenProvider tokenProvider;
 
+    @Value("${app.frontend.base-url}") // Asegúrate de definir esta propiedad
+    private String frontendBaseUrl;
+
     public void enviarInvitaciones(List<String> correoEstudiantes) {
         for (String email : correoEstudiantes) {
             String token = tokenProvider.crearInvitacionToken(email);
-            String enlaceInvitacion = "http://localhost:8080/registro-completar?token=" + token;
+            String enlaceInvitacion = frontendBaseUrl + "/registro-estudiante?token=" + token;
 
             String mensajeHtml = """
                 <!DOCTYPE html>
