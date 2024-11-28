@@ -18,4 +18,10 @@ public class ProfileController {
         String email = authentication.getName();
         return userService.getUserProfile(email);
     }
+
+    @PutMapping
+    public UserProfileDTO updateProfile(@RequestBody UserProfileDTO userProfileDTO, Authentication authentication) {
+        String email = authentication.getName();
+        return userService.updateUserProfile(email, userProfileDTO);
+    }
 }

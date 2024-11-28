@@ -49,4 +49,29 @@ public class UserService {
         return userMapper.toUserProfileDTO(user);
     }
 
+
+     // Actualiza el perfil del usuario con los datos proporcionados en el DTO.
+
+    public UserProfileDTO updateUserProfile(String email, UserProfileDTO userProfileDTO) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el correo: " + email));
+
+        // Actualiza los datos según el rol del usuario
+        if (user.getTutor() != null) {
+            user.getTutor().setNombre(userProfileDTO.getNombre());
+            user.getTutor().setApellidos(userProfileDTO.getApellidos());
+            user.getTutor().setDepartamento(userProfileDTO.getDepartamento());
+        } else if (user.getEstudiante() != null) {
+            user.getEstudiante().setNombre(userProfileDTO.getNombre());
+            user.getEstudiante().setApellidos(userProfileDTO.getApellidos());
+            user.getEstudiante().setCiclo(userProfileDTO.getCiclo());
+        }
+
+        // Guarda los cambios en la base de datos
+        User updatedUser = userRepository.save(user);
+
+        // Devuelve el perfil actualizado como DTO
+        return userMapper.toUserProfileDTO(updatedUser);
+    }
+
 }
