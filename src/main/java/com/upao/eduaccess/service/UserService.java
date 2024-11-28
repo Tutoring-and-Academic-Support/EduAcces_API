@@ -1,6 +1,8 @@
 package com.upao.eduaccess.service;
 
 import com.upao.eduaccess.domain.User;
+import com.upao.eduaccess.dto.UserProfileDTO;
+import com.upao.eduaccess.mapper.UserMapper;
 import com.upao.eduaccess.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +16,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * Busca y retorna un usuario por su correo electrónico.
@@ -35,4 +40,13 @@ public class UserService {
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
+
+
+    public UserProfileDTO getUserProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return userMapper.toUserProfileDTO(user);
+    }
+
 }
