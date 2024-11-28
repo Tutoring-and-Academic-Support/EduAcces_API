@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/registrar")
@@ -42,24 +44,35 @@ public class RegistrarUsuarioController {
     }
 
     @PostMapping("/invitaciones")
-    public ResponseEntity<String> enviarInvitacion(@RequestBody InvitacionDTO invitacionDTO) {
+    public ResponseEntity<Map<String, String>> enviarInvitacion(@RequestBody InvitacionDTO invitacionDTO) {
         try {
             List<String> correos = invitacionDTO.getCorreos();
             invitacionService.enviarInvitaciones(correos);
-            return new ResponseEntity<>("Invitaciones enviadas correctamente.", HttpStatus.OK);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Invitaciones enviadas correctamente.");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("Error al enviar invitaciones: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Error al enviar invitaciones: " + e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 
+
+
     @GetMapping("/registro-completar")
-    public ResponseEntity<String> completarRegistro(@RequestParam String token) {
+    public ResponseEntity<Map<String, Object>> completarRegistro(@RequestParam String token) {
+        Map<String, Object> response = new HashMap<>();
         if (!usuarioService.validarToken(token)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Token inválido o expirado.");
+            response.put("status", "error");
+            response.put("message", "Token inválido o expirado.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
-        // Aquí puedes devolver información necesaria para el frontend
-        return ResponseEntity.ok("Token válido. Procede con el registro.");
+        response.put("status", "success");
+        response.put("message", "Token válido. Procede con el registro.");
+        return ResponseEntity.ok(response);
     }
+
 
     @PostMapping("/estudiante")
     public ResponseEntity<String> registroEstudiante(@Valid @RequestBody RegistrarEstudianteDTO estudianteDTO, @RequestParam String token) {

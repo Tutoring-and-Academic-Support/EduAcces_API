@@ -30,6 +30,9 @@ public class Curso {
     @Column(name = "valoracion", nullable = false)
     private int valoracion;
 
+    @Column(name = "ciclo", nullable = false)
+    private int ciclo;
+
     @OneToMany(mappedBy = "curso")
     private List<Material> materiales;
 

@@ -118,8 +118,13 @@ public class TokenProvider {
 
     @PostConstruct
     public void init() {
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);  // Genera una clave segura automáticamente para HS512
+        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
+        if (keyBytes.length < 64) {
+            throw new IllegalArgumentException("La clave secreta es demasiado corta para HS512. Debe ser de al menos 512 bits (64 bytes).");
+        }
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
+
 
     public String createToken(Authentication authentication) {
         String email = authentication.getName();

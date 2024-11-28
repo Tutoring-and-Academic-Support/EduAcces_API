@@ -1,6 +1,8 @@
 package com.upao.eduaccess.service;
 
 import com.upao.eduaccess.domain.User;
+import com.upao.eduaccess.dto.UserProfileDTO;
+import com.upao.eduaccess.mapper.UserMapper;
 import com.upao.eduaccess.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +16,9 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * Busca y retorna un usuario por su correo electrónico.
@@ -35,4 +40,38 @@ public class UserService {
     public boolean checkPassword(String rawPassword, String encodedPassword) {
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }
+
+
+    public UserProfileDTO getUserProfile(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return userMapper.toUserProfileDTO(user);
+    }
+
+
+     // Actualiza el perfil del usuario con los datos proporcionados en el DTO.
+
+    public UserProfileDTO updateUserProfile(String email, UserProfileDTO userProfileDTO) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el correo: " + email));
+
+        // Actualiza los datos según el rol del usuario
+        if (user.getTutor() != null) {
+            user.getTutor().setNombre(userProfileDTO.getNombre());
+            user.getTutor().setApellidos(userProfileDTO.getApellidos());
+            user.getTutor().setDepartamento(userProfileDTO.getDepartamento());
+        } else if (user.getEstudiante() != null) {
+            user.getEstudiante().setNombre(userProfileDTO.getNombre());
+            user.getEstudiante().setApellidos(userProfileDTO.getApellidos());
+            user.getEstudiante().setCiclo(userProfileDTO.getCiclo());
+        }
+
+        // Guarda los cambios en la base de datos
+        User updatedUser = userRepository.save(user);
+
+        // Devuelve el perfil actualizado como DTO
+        return userMapper.toUserProfileDTO(updatedUser);
+    }
+
 }

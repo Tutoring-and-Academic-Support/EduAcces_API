@@ -43,7 +43,6 @@ public class PlanController {
     }
 
     // Obtener todos los planes
-    // Obtener todos los planes (devuelve PlanResponse si es para la API REST)
     @GetMapping
     public ResponseEntity<List<PlanResponse>> obtenerPlan() {
         List<PlanResponse> planes = planService.getAllPlan(); // Esto devuelve DTOs
