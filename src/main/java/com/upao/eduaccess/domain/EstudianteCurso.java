@@ -1,10 +1,9 @@
 package com.upao.eduaccess.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+
 import java.util.Date;
 
-@Data
 @Entity
 @Table(name = "estudiante_curso")
 public class EstudianteCurso {
@@ -13,7 +12,7 @@ public class EstudianteCurso {
     private EstudianteCursoPK id;
 
     @ManyToOne
-    @MapsId("idEstudiante")  // Esto mapea el campo 'idEstudiante' de la clave compuesta
+    @MapsId("idEstudiante")
     @JoinColumn(name = "id_estudiante", referencedColumnName = "id")
     private Estudiante estudiante;
 
@@ -24,7 +23,7 @@ public class EstudianteCurso {
 
     @Column(name = "fecha", nullable = false)
     private Date fecha;
-}
 
+}
 
 
